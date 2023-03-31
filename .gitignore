@@ -1,3 +1,6 @@
 dataset/
 weights/
 __pycache__/
+
+*.pt
+*.pth

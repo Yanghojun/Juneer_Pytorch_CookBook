@@ -26,9 +26,9 @@ def main():
     train_dataloader = LasDataLoader(config, device, train=True).build()
     test_dataloader = LasDataLoader(config, device, train=False).build()
     
+    model = AutoEncoder_v2(config, device, train_dataloader, test_dataloader).to(device)
     # model = AutoEncoder(config, device, train_dataloader, test_dataloader).to(device)
-    model = AutoEncoder(config, device, train_dataloader, test_dataloader).to(device)
-    # model.fit_model()
+    model.fit_model()
     model.generate(config, device, train_dataloader, test_dataloader)
 
 if __name__ == '__main__':
