@@ -8,9 +8,9 @@ SAVED_MODEL_DIR: './3epoch_hand_denoised/'
 # path to load weight
 LOAD_MODEL_DIR: './3epoch_hand_denoised/'
 CHANNELS: 3
-BATCH_SIZE: 2
-EPOCHS: 3
+BATCH_SIZE: 1
+EPOCHS: 200
 # OPTIMIZER: RMSprop(Learning_rate=0.00001)
 OPTIMIZER: "adam"
 LOSS: 'binary_crossentropy'
-GENERATED_DATA_PATH: './dataset/generated_hand_denoised/'
+GENERATED_DATA_PATH: './dataset/generated_hand_denoised_v2/'

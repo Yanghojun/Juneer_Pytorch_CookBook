@@ -13,8 +13,8 @@ from tqdm import tqdm
 from PIL import Image
 
 class LasDataLoader(BaseLoader):
-	def __init__(self, config, train=True):
-		self.dataset = LasDataSet(config, train)
+	def __init__(self, config, device, train=True):
+		self.dataset = LasDataSet(config, device, train)
 
 	def build(self):
 		return DataLoader(self.dataset, batch_size=self.dataset.batch_size, shuffle=True)
@@ -22,8 +22,9 @@ class LasDataLoader(BaseLoader):
 
 # Inner class LasDataSet
 class LasDataSet(Dataset):
-	def __init__(self, config, train=True):
+	def __init__(self, config, device, train=True):
 		self.config = config
+		self.device = device
 		self.batch_size = self.config.config_namespace.BATCH_SIZE
 		self.transform = transforms.ToTensor()
 
@@ -40,14 +41,14 @@ class LasDataSet(Dataset):
 		self.x_paths.sort(), self.y_paths.sort()
 
 	def __len__(self):
-		# torch는 batchsize로 따로 조절해줄 필요 없을듯. torch Loader 클래스에 batch argument 존재
-		if self.config.config_namespace.PYTORCH:
-			return len(self.x_paths)
+		return len(self.x_paths)
 
 	def __getitem__(self, idx):
 		x_path, y_path = self.x_paths[idx], self.y_paths[idx]
+		file_name = os.path.split(x_path)[-1]
+
 		img = Image.open(x_path)
 		label = Image.open(y_path)
 
 		img, label = self.transform(img), self.transform(label)
-		return img, label
+		return img.to(self.device), label.to(self.device), file_name
